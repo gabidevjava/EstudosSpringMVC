@@ -34,27 +34,7 @@ public class ProdutoDao {
 
 	public List<Produto> getProdutos(String nome, Integer categoriaId, Integer lojaId) {
 		
-		String jpql = "select p from Produto p";
-		
-		if(categoriaId != null) {
-			jpql += "join fetch p.categorias c where c.id :pCategoriaId";
-		}
-		
-		if(lojaId != null) {
-			jpql += "p.loja.id = :pLojaId";
-		}
-		
-		if(!nome.isEmpty()) {
-			jpql += "p.nome like :pProdutoNome";
-		}
-		
-		TypedQuery<Produto> createQuery = em.createQuery(jpql, Produto.class);
-		
-		createQuery.setParameter("pCategoriaId", categoriaId);
-		createQuery.setParameter("pLojaId", lojaId);
-		createQuery.setParameter("pProdutoNome", nome);
-		
-		/*CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Produto> query = criteriaBuilder.createQuery(Produto.class);
 		Root<Produto> root = query.from(Produto.class);
 
@@ -79,9 +59,8 @@ public class ProdutoDao {
 
 		query.where((Predicate[]) predicates.toArray(new Predicate[0]));
 
-		TypedQuery<Produto> typedQuery = em.createQuery(query);*/
-		return createQuery.getResultList();
-		
+		TypedQuery<Produto> typedQuery = em.createQuery(query);
+		return typedQuery.getResultList();		
 	}
 
 	public void insere(Produto produto) {
